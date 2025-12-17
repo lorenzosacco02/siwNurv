@@ -1,56 +1,86 @@
+/* adminIndex.css */
+
 body {
-    background: url('/img/background.jpg') no-repeat center center fixed;
+    background: url('/images/pattern1.png') no-repeat center center fixed;
     background-size: cover;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-wrapper {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
 }
 
 .login-box {
     background-color: rgba(255, 255, 255, 0.85);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease-in-out;
+    /* Aumentato padding per renderli più grandi */
+    padding: 4rem 3rem;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    /* Garantisce che siano grandi uguali */
+    min-height: 450px;
 }
 
 .login-box:hover {
-    transform: scale(1.02);
-}
-
-.title {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #8B0000;
-    margin-bottom: 0.5rem;
-}
-
-.subtitle {
-    font-size: 1.1rem;
-    color: #555;
-}
-
-.btn-navy {
-    background-color: #111111;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1.5rem;
-    font-weight: 500;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-navy:hover {
-    transform: scale(1.02);
-    background-color: #8B0000;
-    color: #fff;
+    transform: translateY(-10px);
+    background-color: rgba(255, 255, 255, 0.95);
 }
 
 .box-image {
-    max-width: 100%;
+    /* Immagini leggermente più grandi per bilanciare il box grande */
+    max-width: 180px;
     height: auto;
     border-radius: 15px;
+    margin-bottom: 2rem;
 }
 
-/* Optional: smoother layout spacing */
-.container .row {
-    margin-bottom: 4rem;
+.title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2D323A;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.btn-navy {
+    background-color: #FFB600;
+    color: #2D323A;
+    border: none;
+    padding: 0.8rem 3.5rem; /* Bottone più grande */
+    font-weight: 700;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-navy:hover {
+    background-color: #2D323A;
+    color: #FFB600;
+    transform: scale(1.05);
+}
+
+/* Allineamento pulsante in basso se il testo varia */
+.mt-auto {
+    margin-top: auto !important;
 }

@@ -1,0 +1,137 @@
+/*
+ * 1. Reset e configurazione base con sfondo generale.
+ */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden; /* Previene scrollbar indesiderate */
+
+    /* SFONDO GENERALE */
+    background-image: url('/images/pattern1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* Centra il contenuto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*
+ * Container: definito per il margine esterno e il posizionamento fluttuante.
+ */
+.container {
+    height: 85vh; /* Leggermente ridotto per far vedere meglio lo sfondo generale */
+    width: 90vw;
+    margin: auto;
+    padding: 0;
+    display: flex;
+    background: transparent;
+}
+
+/*
+ * 2. Stile per i due box affiancati.
+ */
+.row-boxes {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/*
+ * 3. Stile per il box singolo e l'Overlay.
+ */
+.box {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); /* Transizione più fluida */
+
+    position: relative;
+    overflow: hidden;
+
+    /* Margine tra i box e i bordi */
+    margin: 20px;
+
+    /* Bordi stondati e ombra */
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/*
+ * Overlay Scurente - ALLEGGERITO
+ */
+.box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Filtro scurente alleggerito a 0.2 (prima era 0.4) */
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    transition: background-color 0.3s ease;
+}
+
+/*
+ * 4. Assegnazione delle immagini di sfondo specifiche.
+ */
+.row-boxes > .box:nth-child(1) {
+    background-image: url('/images/Operatore.png');
+}
+
+.row-boxes > .box:nth-child(2) {
+    background-image: url('/images/robot.png');
+}
+
+/*
+ * 5. Stile per i link (testo).
+ */
+.box .btn {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0;
+    z-index: 2;
+
+    font-size: 3rem; /* Testo leggermente più grande */
+    font-weight: 800;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    /* Ombra più definita per compensare il filtro più chiaro */
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+
+    color: #FFB600 !important;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.box .btn:hover {
+    color: #ffd25a !important;
+    transform: scale(1.05);
+}
+
+/*
+ * 6. Interazione: Effetto Hover.
+ */
+.box:hover {
+    transform: scale(1.02) translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    z-index: 10;
+}
+
+/* Rende l'overlay quasi invisibile all'hover per illuminare l'immagine al massimo */
+.box:hover::before {
+    background-color: rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,143 @@
+/* ===== Background e font ===== */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: url('/images/Sfondo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding-top: 70px; /* per navbar */
+    color: #2C2C2C; /* Grigio Antracite per il testo generale */
+}
+
+/* ===== Container principale ===== */
+.container.my-5 {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ===== Titolo pagina ===== */
+h2 {
+    font-weight: 700;
+    font-size: 2.8rem;
+    color: #FFB600; /* Giallo per il titolo */
+    text-align: center;
+    margin-bottom: 2rem;
+    /* Ombra scura per far risaltare il giallo su sfondi chiari */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Tabella anomalie ===== */
+.table {
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    border: none;
+}
+
+.table thead {
+    background-color: #2C2C2C; /* Testata Antracite */
+    color: #FFB600; /* Testo testata Giallo */
+}
+
+/* Righe della tabella */
+.table-hover tbody tr:hover {
+    background-color: rgba(255, 182, 0, 0.05); /* Leggerissimo riflesso giallo al passaggio */
+}
+
+/* ===== Bottoni azioni (Outline) ===== */
+.btn-outline-primary {
+    border-color: #2C2C2C;
+    color: #2C2C2C;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #FFB600; /* Diventa giallo all'hover */
+    border-color: #FFB600;
+    color: #2C2C2C;
+}
+
+/* ===== Bottone Pericolo / Delete ===== */
+.btn-danger {
+    background-color: #2C2C2C;
+    color: #FFB600;
+    border: 2px solid #FFB600;
+    font-weight: 700;
+    padding: 0.45rem 0.9rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #FFB600;
+    color: #2C2C2C;
+    border-color: #2C2C2C;
+}
+
+.btn-sm {
+    font-size: 0.9rem;
+    padding: 0.35rem 0.75rem;
+}
+
+/* ===== Badge gravità / Icona ===== */
+.badge.bg-danger {
+    position: relative;
+    width: 55px;
+    height: 55px;
+    background-color: transparent !important;
+    color: #2C2C2C !important; /* Testo antracite */
+    border: 3px solid #FFB600; /* Cerchio o bordo giallo */
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+/* ===== Scrollbar personalizzata ===== */
+.anomalie-video {
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 12px;
+}
+
+.anomalie-video::-webkit-scrollbar {
+    width: 10px;
+}
+
+.anomalie-video::-webkit-scrollbar-track {
+    background: #e0e0e0; /* Grigio chiaro per la traccia */
+    border-radius: 16px;
+}
+
+.anomalie-video::-webkit-scrollbar-thumb {
+    background-color: #FFB600; /* Cursore Giallo */
+    border-radius: 16px;
+    border: 2px solid #e0e0e0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    h2 {
+        font-size: 2.2rem;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
+
+    .btn-sm {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .badge.bg-danger {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}

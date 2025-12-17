@@ -20,4 +20,10 @@ public class AnomaliaService {
     public Anomalia getById(Long anomaliaId) {
         return anomaliaRepository.findById(anomaliaId).orElse(null);
     }
+
+    @Transactional(readOnly = true)
+    public Iterable<Anomalia> getAll() {
+        return anomaliaRepository.findAll();
+    }
+
 }

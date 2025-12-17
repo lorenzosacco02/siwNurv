@@ -49,13 +49,19 @@ public class AuthConfiguration {
     protected SecurityFilterChain configure(final HttpSecurity httpSecurity)
             throws Exception{
         httpSecurity
-                .csrf().and().cors().disable()
+                // ❗ SOLUZIONE: Disabilita CSRF solo per l'endpoint API alert
+                // Altrimenti, Spring Security reindirizza la richiesta POST anonima a /login.
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers(new AntPathRequestMatcher("/api/alerts"))
+                        .and()
+                )
+                .cors().disable()
                 .authorizeHttpRequests()
 
                 // pagine e risorse su cui tutti possono fare GET
                 .requestMatchers(HttpMethod.GET,"/","/login","/register","/index","/css/**", "/images/**", "favicon.ico").permitAll()
                 // pagine e risorse su cui tutti possono fare POST
-                .requestMatchers(HttpMethod.POST,"/search","/register","/login").permitAll()
+                .requestMatchers(HttpMethod.POST,"/search","/register","/login","/api/alerts").permitAll() // ✅ /api/alerts è qui
 
                 // pagine e risorse su cui solo gli ADMIN possono fare GET
                 .requestMatchers(HttpMethod.GET,"/admin/**").hasAnyAuthority(ADMIN_ROLE)

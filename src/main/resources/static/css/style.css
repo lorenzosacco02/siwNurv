@@ -1,20 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+/* style.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
+/* Regole globali: Mappate alla palette NURV */
 body {
 	margin: 0;
 	padding-top: 70px;
-	font-family: 'Poppins', sans-serif;
+	/* Assicurati che le variabili siano definite in :root di un file letto prima */
+	font-family: var(--font-body);
+	color: var(--color-dark);
 	background-size: cover;
-	color: #000000;
+	line-height: 1.6; /* Aggiunto per coerenza */
 }
 
-/* Bottone scuro personalizzato */
+/* ... (Altri stili globali come btn-navy se necessari) ... */
+
+/* Esempio di bottone che usa le variabili (se non è in form.css) */
 .btn-navy {
-	background-color: #111111;
-	color: #ffffff;
+	background-color: var(--color-dark);
+	color: var(--color-light);
 	border: none;
 	padding: 14px 36px;
-	border-radius: 32px;
+	border-radius: var(--border-radius-base, 10px);
 	font-weight: 700;
 	font-size: 1.1rem;
 	letter-spacing: 1px;
@@ -23,11 +29,6 @@ body {
 }
 
 .btn-navy:hover {
-	background-color: #333333;
+	background-color: var(--color-secondary);
 	transform: scale(1.05);
-}
-
-/* Utilità globali */
-.full-height {
-	height: calc(100vh - 140px); /* 100vh meno spazio logo */
 }

@@ -1,0 +1,115 @@
+/* ==========================================================================
+   1. SFONDO E COERENZA GENERALE
+   ========================================================================== */
+body {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    background: url('/images/pattern1.png') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding-top: 70px;
+    color: #FFFFFF;
+}
+
+/* Overlay molto leggero per far risaltare il background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: -1;
+}
+
+/* ==========================================================================
+   2. BADGE DI GRAVITÀ (SEVERITY)
+   ========================================================================== */
+.severity-badge {
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    display: inline-block;
+    min-width: 100px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+/* CRITICA: Rosso Intenso */
+.severity-CRITICA {
+    background-color: #dc3545;
+    color: #FFFFFF;
+    border-color: #b02a37;
+    animation: pulse-red 1.5s infinite;
+}
+
+/* ALTA: Giallo con testo Antracite */
+.severity-ALTA {
+    background-color: #FFB600;
+    color: #2C2C2C;
+    border-color: #2C2C2C;
+}
+
+/* MEDIO: Antracite con bordo Giallo */
+.severity-MEDIO {
+    background-color: #2C2C2C;
+    color: #FFB600;
+    border-color: #FFB600;
+}
+
+/* BASSO: Grigio neutro */
+.severity-BASSO {
+    background-color: rgba(44, 44, 44, 0.9);
+    color: #FFFFFF;
+    border-color: #555;
+}
+
+/* ==========================================================================
+   3. DETTAGLI TECNICI E SCRITTE DILATAZIONE
+   ========================================================================== */
+
+/* Scritte dei dettagli (es. dilatazione, misurazioni) in Grigio Antracite */
+.details-text {
+    font-size: 0.85rem;
+    color: #2C2C2C !important; /* Richiesto: Grigio Antracite */
+    margin-top: 10px;
+    font-weight: 600;
+    font-style: normal;
+    background: #FFB600; /* Sfondo Giallo per contrasto con l'antracite */
+    padding: 8px 15px;
+    border-left: 5px solid #2C2C2C; /* Bordo laterale scuro */
+    display: inline-block;
+    border-radius: 4px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+}
+
+/* ==========================================================================
+   4. COMPONENTI DASHBOARD
+   ========================================================================== */
+
+/* Card per ogni segnalazione */
+.dashboard-card {
+    background-color: rgba(44, 44, 44, 0.95); /* Antracite */
+    border: 1px solid #444;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    border-color: #FFB600;
+    transform: scale(1.005);
+}
+
+/* Animazione per i casi critici */
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}

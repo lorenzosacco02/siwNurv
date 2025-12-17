@@ -1,3 +1,28 @@
+:root {
+    /* --- Variabili chiave per coerenza --- */
+    --color-primary: #A8A39B;
+    --color-secondary: #71717A;
+    --color-dark: #f5f5f0;
+    --color-light: #F7F7F7;
+    --color-accent: #FFB600; /* Rame/Oro Piatto */
+    --color-background: #F5F5F0;
+    --border-radius-base: 10px;
+}
+
+body {
+    /* Mantieni le regole di colore e font esistenti */
+    font-family: var(--font-body);
+    color: var(--color-dark);
+    background-color: var(--color-background);
+
+    /* ❗ AGGIUNGI QUESTE REGOLE PER L'IMMAGINE DI SFONDO ❗ */
+    background-image: url('/images/pattern1.png'); /* <-- Inserisci qui il percorso corretto */
+    background-size: cover; /* Assicura che l'immagine copra sempre l'intero sfondo */
+    background-position: center; /* Centra l'immagine */
+    background-attachment: fixed; /* L'immagine rimane ferma quando l'utente scorre */
+}
+
+/* ===== Wrapper Immagine Profilo (Contenitore) ===== */
 .profile-pic-wrapper {
     width: 180px;
     height: 180px;
@@ -5,56 +30,72 @@
     position: relative;
 }
 
+/* ===== Immagine Profilo Circolare ===== */
 .profile-pic {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
-    border: 4px solid #fff;
+    /* Bordo: Bianco assoluto per staccare */
+    border: 4px solid var(--color-light);
+    /* Ombra discreta */
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    background-color: #f0f0f0;
+    /* Sfondo: Il colore più chiaro del sito (il nostro "Bianco Pantone") */
+    background-color: var(--color-background);
 }
 
+/* ===== Icona di Modifica (Piccolo Cerchio Sull'Angolo) ===== */
 .edit-icon {
     position: absolute;
     bottom: 0;
     right: 0;
-    background-color: #ffffff;
+    /* Sfondo: Bianco assoluto */
+    background-color: var(--color-light);
     border-radius: 50%;
     padding: 6px 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    color: #333;
+    /* Colore Icona: Grigio Scuro */
+    color: var(--color-secondary);
     font-size: 1rem;
     transition: background-color 0.3s;
 }
 
 .edit-icon:hover {
-    background-color: #e9ecef;
+    /* Hover: Grigio Neutro */
+    background-color: var(--color-section-bg);
 }
 
+/* ===== Card di Informazioni Generali ===== */
 .profile-info {
     max-width: 420px;
     font-size: 1.1rem;
-    border-radius: 12px;
+    border-radius: var(--border-radius-base);
     overflow: hidden;
+    /* Rimosso box-shadow per usare solo l'ombra della card esterna */
     box-shadow: 0 0 0 transparent;
 }
 
+/* ===== Anteprime per Selezione (es. selezione di un avatar) ===== */
 .stock-thumbnail {
     transition: transform 0.2s, border-color 0.2s;
 }
 
+/* Stato selezionato: Bordo Rame e Leggero Ingrandimento */
 input[type="radio"]:checked + img.stock-thumbnail {
-    border-color: #007bff;
+    border-color: var(--color-accent); /* ❗ Bordo Rame/Oro */
     transform: scale(1.1);
 }
 
+/* ===== Card Contenitore Principale ===== */
 .profile-card {
     border-radius: 15px;
-    background-color: #fff;
+    /* Sfondo: Bianco assoluto o Bianco Sporco */
+    background-color: var(--color-light);
     overflow: hidden;
+    /* Assicurati che l'ombra sia definita nel CSS globale */
 }
 
+/* ===== Foto Profilo "Fluttuante" (usata spesso nei header) ===== */
 .floating-profile-pic {
     position: absolute;
     top: -60px;
@@ -65,11 +106,14 @@ input[type="radio"]:checked + img.stock-thumbnail {
     height: 120px;
     border-radius: 50%;
     overflow: hidden;
-    border: 4px solid white;
-    background-color: white;
+    /* Bordo e Sfondo coerenti con il colore più chiaro del progetto */
+    border: 4px solid var(--color-background);
+    background-color: var(--color-background);
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
+/* ===== Colore base delle Icone Bootstrap (se non specificato) ===== */
 .bi::before{
-    color: #8B0000;
+    /* ❗ Colore di default per le icone Rame/Oro */
+    color: var(--color-accent);
 }

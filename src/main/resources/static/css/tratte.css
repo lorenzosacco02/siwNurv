@@ -19,19 +19,19 @@ label.form-label {
     padding: 10px 15px;
     font-size: 1rem;
     color: #111;
-    background-color: #fff;
+    background-color: #F5F5F0;
     transition: border-color 0.3s ease;
 }
 
 .form-select:focus,
 .form-control:focus {
-    border-color: #5a0000;
-    box-shadow: 0 0 6px rgba(139, 0, 0, 0.5);
+    border-color: #FFB600;
+    box-shadow: 0 0 6px rgb(255, 182, 0);
     outline: none;
 }
 
 button.btn-primary {
-    background-color: #8B0000;
+    background-color: #ffb600;
     border: none;
     font-weight: 700;
     font-size: 1.05rem;
@@ -48,7 +48,7 @@ button.btn-primary:hover {
 h2 {
     font-weight: 700;
     font-size: 2rem;
-    color: #8B0000; /* bordeaux */
+    color: #2D323A; /* bordeaux */
     text-shadow: 0 1px 4px rgba(255, 255, 255, 0.4);
     margin-bottom: 30px;
 }
@@ -79,7 +79,7 @@ h2 {
 .card-title {
     font-size: 1.3rem;
     font-weight: 700;
-    color: #8B0000 !important;
+    color: #2D323A !important;
     margin-bottom: 15px;
     white-space: nowrap;
     overflow: hidden;
@@ -96,8 +96,8 @@ h2 {
 
 /* Pulsante visualizza dettagli */
 .btn-outline-primary {
-    border-color: #8B0000;
-    color: #8B0000;
+    border-color: #ffb600;
+    color: #ffb600;
     font-weight: 600;
     border-radius: 10px;
     padding: 8px 16px;
@@ -106,8 +106,8 @@ h2 {
 }
 
 .btn-outline-primary:hover {
-    background-color: #8B0000;
-    color: #fff;
+    background-color: #ffb600;
+    color: #F5F5F0;
 }
 
 /* Pulsante elimina */
@@ -133,22 +133,22 @@ h2 {
     align-items: center;
     text-align: center;
     cursor: pointer;
-    color: #8B0000 !important; /* forza colore testo */
+    color: #2D323A !important; /* forza colore testo */
     padding: 20px;
 }
 
 .card.bg-light.d-flex:hover {
-    background-color: #f5dcdc;
+    background-color: #F5F5F0;
 }
 
 .card-body.text-center .display-3 {
-    color: #8B0000;
+    color: #ffb600;
     font-weight: 900;
     user-select: none;
 }
 
 .card-body.text-center .h5 {
-    color: #8B0000;
+    color: #ffb600;
     font-weight: 700;
 }
 

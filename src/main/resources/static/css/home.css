@@ -1,28 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+/* Assicurati che global.css sia linkato prima di questo */
 
 body {
+    /* Rimuoviamo lo sfondo fisso qui, lo gestiamo nell'HTML per coerenza */
+    font-family: var(--font-heading);
     margin: 0;
     padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background: url('/images/Sfondo.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: #000000;
+    color: var(--color-secondary);
     height: 100vh;
     display: flex;
+    flex-direction: column; /* Necessario per far stare la navbar sopra */
     align-items: center;
     justify-content: center;
+    padding-top: 0; /* Rimosso, lo gestisce il padding del container */
 }
 
 .container-fluid {
     height: 100%;
 }
 
-.row.g-0 {
-    height: 100%;
-    display: flex;
-}
-
-.col-12.col-md-6 {
+.split-section {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -31,7 +27,7 @@ body {
 }
 
 .login-box {
-    background-color: rgba(230, 230, 230, 0.85); /* meno trasparente */
+    background-color: rgba(255, 255, 255, 0.9);
     width: 100%;
     max-width: 550px;
     height: 480px;
@@ -39,96 +35,37 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 14px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Usa le regole della card da global.css */
     text-align: center;
-
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeSlideUp 0.8s forwards;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-.login-box:nth-child(1) {
-    animation-delay: 0.2s;
-}
-
-.login-box:nth-child(2) {
-    animation-delay: 0.5s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .login-box:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px); /* Effetto hover dinamico */
 }
 
 .title {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     font-weight: 700;
+    color: var(--color-primary);
     margin-bottom: 12px;
-    color: #8B0000;
-    text-shadow: 0 1px 5px rgba(255, 255, 255, 0.25);
 }
 
 .subtitle {
     font-size: 1.1rem;
-    color: #000000;
+    color: var(--color-dark-grey);
     margin-bottom: 32px;
-    padding: 0 20px;
-    line-height: 1.5;
 }
 
 .btn-navy {
-    background-color: #111111;
-    color: #ffffff;
-    border: none;
+    @extend .btn-base;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
     padding: 16px 44px;
-    border-radius: 32px;
-    font-weight: 700;
     font-size: 1.15rem;
-    text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: none;
     letter-spacing: 1px;
 }
 
 .btn-navy:hover {
     background-color: #333333;
-    transform: scale(1.05);
-}
-
-@keyframes fadeSlideUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (max-width: 768px) {
-    .row.g-0 {
-        flex-direction: column;
-    }
-
-    .login-box {
-        height: auto;
-        padding: 60px 40px;
-        margin-bottom: 30px;
-    }
-
-    /* Logo grande home */
-    .logo-big-container {
-        width: 100%;
-        height: 200px; /* o come preferisci */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: transparent; /* se vuoi */
-        margin-bottom: 30px;
-    }
-
-    .logo-big {
-        max-height: 160px;
-        object-fit: contain;
-    }
-
 }

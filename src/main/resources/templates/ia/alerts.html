@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Segnalazioni IA</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <!-- ❗ IMPORTAZIONE AGGIORNATA DEL FILE CUSTOM CSS -->
+    <link rel="stylesheet" th:href="@{/css/ia_alerts_custom.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/navbarDark.css}">
+</head>
+<body>
+
+<!-- navbar condivisa -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0"> Segnalazioni Intelligenza Artificiale</h2>
+        <small class="text-muted">Visualizza gli ultimi alert rilevati dalla pipeline</small>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div th:if="${anomalie == null or #lists.isEmpty(anomalie)}">
+                <p class="text-muted mb-0">Nessuna segnalazione IA presente.</p>
+            </div>
+
+            <div th:if="${anomalie != null and !#lists.isEmpty(anomalie)}" class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Video</th>
+                        <th>Tempo (s)</th>
+                        <!-- ❗ Nuova Colonna: Gravità -->
+                        <th>Gravità</th>
+                        <th>Tipo / Dettagli</th>
+                        <th>Confidenza</th>
+                        <th>Coordinate BBox</th>
+                        <th>Azioni</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="a : ${anomalie}" th:with="videoId=${a.video != null} ? ${a.video.id} : 0,
+                                                                 timeSec=${a.timeSeconds},
+                                                                 gravitaStr=${a.gravitaString != null ? a.gravitaString : 'UNKNOWN'}">
+                        <td th:text="${a.id}">1</td>
+
+                        <!-- Video -->
+                        <td>
+                            <!-- Link alla Tratta se il video è associato -->
+                            <a th:if="${a.video != null}" th:href="@{'/tratta/' + ${a.video.tratta.id}}"
+                               th:text="${a.video.nome}">NomeVideo</a>
+                            <!-- Mostra il nome file se non è ancora associato al DB -->
+                            <span th:if="${a.video == null}" th:text="${a.sorgenteVideoIA}">query.mp4</span>
+                        </td>
+
+                        <td th:text="${#numbers.formatDecimal(timeSec, 1, 2)}">12.34</td>
+
+                        <!-- ❗ Colonna Gravità (con stile dinamico) -->
+                        <td>
+                            <span class="severity-badge" th:classappend="'severity-' + ${gravitaStr}"
+                                  th:text="${gravitaStr}">CRITICA</span>
+                        </td>
+
+                        <td>
+                            <!-- Tipo Anomalia -->
+                            <strong th:text="${a.tipoAnomalia}">DILATAZIONE_FERROVIA</strong>
+
+                            <!-- ❗ Dettagli Tecnici (visibili per anomalie strutturali) -->
+                            <div class="details-text" th:if="${a.dettagliTecnici != null and a.dettagliTecnici.length() > 0}"
+                                 th:text="${a.dettagliTecnici}">Dettagli Tecnici IA</div>
+
+                            <!-- Descrizione (Manuale/IA) -->
+                            <div><small th:text="${a.descrizione}">Descrizione (Manuale/IA)</small></div>
+                        </td>
+
+                        <td th:text="${#numbers.formatDecimal(a.confidenza, 1, 2)}">0.92</td>
+
+                        <td>
+                            <!-- BBox: Visualizza solo se le coordinate BBox sono valide -->
+                            <span th:if="${a.w != null and a.w > 0}">
+                                BBox: (<span th:text="${a.x}"></span>, <span th:text="${a.y}"></span>, 
+                                <span th:text="${a.w}"></span>, <span th:text="${a.h}"></span>)
+                            </span>
+                            <span th:unless="${a.w != null and a.w > 0}">
+                                N/A (Strutturale)
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="d-flex gap-2">
+                                <!-- Link alla Tratta/Video -->
+                                <a th:if="${a.video != null}" class="btn btn-sm btn-outline-primary"
+                                   th:href="@{'/tratta/' + ${a.video.tratta.id}}" title="Vai alla Tratta">
+                                    <i class="bi bi-geo-alt-fill"></i>
+                                </a>
+
+                                <!-- Apri Video -->
+                                <a th:if="${a.video != null}" class="btn btn-sm btn-outline-secondary"
+                                   th:href="@{'/video/' + ${videoId} + '/stream'}"
+                                   title="Apri Video">
+                                    <i class="bi bi-play-btn-fill"></i>
+                                </a>
+
+                                <!-- Admin: Segnalazione Risolta -->
+                                <form th:if="${isAdmin}" th:action="@{'/admin/anomalia/' + ${a.id} + '/updateRisolta'}"
+                                      method="post" style="display:inline;">
+                                    <input type="hidden" name="id" th:value="${a.id}" />
+                                    <button type="submit" class="btn btn-sm"
+                                            th:classappend="${a.risolta} ? 'btn-success' : 'btn-outline-danger'">
+                                        <i th:class="${a.risolta} ? 'bi bi-check-lg' : 'bi bi-x-lg'"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,4 +1,22 @@
-/* ===== Container principale ===== */
+/* form.css */
+/* Variabili di progetto (necessarie per il form) */
+:root {
+    /* --- Palette: Grigi Freddi + Accento Rame Piatto --- */
+    --color-primary: #A8A39B; /* Grigio Neutro */
+    --color-secondary: #71717A; /* Grigio Scuro */
+    --color-dark: #2D323A; /* ❗ CORRETTO: GRIGIO ANTRACITE PROFONDO */
+    --color-light: #F7F7F7; /* Bianco Sporco */
+
+    --color-accent: #FFB600; /* Rame/Oro Piatto */
+
+    --color-background: #F5F5F0;
+    --color-section-bg: #E1E0DA;
+
+    --border-radius-base: 10px;
+    --shadow-soft: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Container principale del Form (mantenuto) ===== */
 .container {
     max-width: 100%;
     display: flex;
@@ -8,11 +26,11 @@
     padding: 60px 20px;
 }
 
-/* ===== Form login ===== */
+/* ===== Form login wrapper ===== */
 .form-container {
-    background-color: rgba(240, 240, 240, 0.95);
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    background-color: var(--color-background);
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--shadow-soft);
     max-width: 400px;
     width: 100%;
     padding: 40px 30px;
@@ -23,66 +41,83 @@
 
 .form-container h2 {
     font-weight: 700;
-    color: #8B0000;
+    /* ❗ TITOLO SCURO */
+    color: var(--color-dark);
     margin-bottom: 24px;
     text-align: center;
 }
 
-/* ===== Input e label ===== */
+/* ===== Input e label (mantenuti scuri) ===== */
 .form-label {
     font-weight: 600;
-    color: #222;
+    color: var(--color-dark);
 }
 
 .input-group-text {
-    background-color: #e6e6e6;
+    background-color: var(--color-section-bg);
     border: none;
-    border-right: 1px solid #ccc;
+    border-right: 1px solid var(--color-primary);
 }
 
 .form-control {
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-primary);
     border-left: none;
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 var(--border-radius-base) var(--border-radius-base) 0;
 }
 
-/* ===== Pulsanti ===== */
+/* ===== Pulsante "Accedi" (Rame con testo Antracite) ===== */
 .btn-primary {
-    background-color: #111;
+    background-color: var(--color-accent);
     border: none;
-    font-weight: 600;
+    /* ❗ TESTO SCURO */
+    color: var(--color-dark);
+    font-weight: 700;
     letter-spacing: 0.5px;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn-primary:hover {
-    background-color: #333;
+    background-color: var(--color-secondary);
+    color: var(--color-light) !important;
     transform: scale(1.03);
 }
 
+/* ===== Pulsante "Accedi con Google" (SCURO/Antracite) ===== */
 .btn-outline-danger {
     font-weight: 600;
     border-radius: 50px;
+    /* ❗ BORDO E TESTO SCURI */
+    border-color: var(--color-secondary) !important;
+    color: var(--color-dark) !important;
+    background-color: transparent !important;
+
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
-/* ===== Link ===== */
+.btn-outline-danger:hover {
+    background-color: var(--color-secondary) !important;
+    color: var(--color-light) !important;
+    transform: scale(1.03);
+}
+
+
+/* ===== Link Registrazione (Rame) ===== */
 a.text-decoration-none {
     font-weight: 600;
-    color: #8B0000;
+    color: var(--color-accent);
 }
 
 a.text-decoration-none:hover {
     text-decoration: underline;
 }
 
-/* ===== Alert errore ===== */
+/* ===== Altro ===== */
 .alert-danger {
     font-size: 0.95rem;
     font-weight: 500;
-    border-radius: 6px;
+    border-radius: var(--border-radius-base);
 }
 
-/* ===== Animazione in entrata ===== */
 @keyframes fadeSlideUp {
     to {
         opacity: 1;
@@ -105,26 +140,3 @@ a.text-decoration-none:hover {
     height: 400px;
     object-fit: cover;
 }
-
-/*!* ===== Spazio immagine accanto al form ===== *!*/
-/*.container::before {*/
-/*    content: "";*/
-/*    display: block;*/
-/*    flex: 0 0 400px;*/
-/*    height: 600px;*/
-/*    background-image: url('/images/Operaio.png'); !* <-- Cambia con il tuo path *!*/
-/*    background-size: contain;*/
-/*    background-position: center;*/
-/*    border-radius: 16px;*/
-/*    animation: fadeSlideUp 0.8s forwards;*/
-/*    transform: translateY(20px);*/
-/*    opacity: 0;*/
-/*}*/
-
-
-/* ===== Responsive: opzionale, puoi anche evitare se non vuoi media queries ===== */
-/* @media (max-width: 992px) {
-    .container::before {
-        display: none;
-    }
-} */
