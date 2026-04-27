@@ -26,4 +26,5 @@ public class AnomaliaService {
         return anomaliaRepository.findAll();
     }
 
+
 }

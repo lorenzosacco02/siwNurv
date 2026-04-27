@@ -23,7 +23,6 @@ public class AlertDtoController {
     // ❗ Campi critici per le anomalie strutturali:
     public String severity; // CRITICA, MEDIO, BASSO
     public String details;  // Dettagli tecnici
-
     public String source_video;
     public Long videoId; // Opzionale
 

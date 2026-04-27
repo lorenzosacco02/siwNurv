@@ -1,5 +1,6 @@
 package it.uniroma3.siw.model;
 
+import java.time.LocalDate;
 import java.util.Objects;
 // Import necessari per JPA e Validazione (preservati)
 import jakarta.persistence.*;
@@ -23,7 +24,8 @@ public class Anomalia {
 
 	// ❗ NUOVI CAMPI AGGIUNTI PER L'IA STRUTTURALE
 	// Campo per la Gravità testuale (es. CRITICA, MEDIO, BASSO)
-	private String gravitaString;
+	private String gravitaString; // Tutto attaccato, senza spazi
+
 
 	// Campo per i dettagli tecnici (es. misurazione dilatazione)
 	@Column(length = 500)
@@ -44,7 +46,7 @@ public class Anomalia {
 	private String descrizione;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private TipoDiAnomalia tipoAnomalia;
 
 	@ManyToOne
@@ -52,7 +54,6 @@ public class Anomalia {
 
 	@ManyToOne
 	private Video video;
-
 
 	// ------------------------------------
 	// METODI equals() e hashCode() ORIGINALI
@@ -128,4 +129,6 @@ public class Anomalia {
 
 	public String getSorgenteVideoIA() { return sorgenteVideoIA; }
 	public void setSorgenteVideoIA(String sorgenteVideoIA) { this.sorgenteVideoIA = sorgenteVideoIA; }
+
+
 }
