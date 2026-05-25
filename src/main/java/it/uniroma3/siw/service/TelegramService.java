@@ -56,7 +56,7 @@ public class TelegramService {
                         "🎬 *Video:* %s\n" +
                         "📝 *Dettagli:* %s\n\n" +
                         "👉 _Accedere alla Central Control Station per validare il report._",
-                tipoAnomalia, severita, videoSorgente, dettagli
+                tipoAnomalia.replace("_" , " "), severita, videoSorgente, dettagli
         );
 
         //Prepariamo il body della richiesta HTTP POST
