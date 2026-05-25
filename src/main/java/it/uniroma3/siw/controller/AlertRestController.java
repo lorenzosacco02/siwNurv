@@ -99,9 +99,9 @@ public class AlertRestController {
             // 6. Assegnazione Entità
             a.setVideo(video);
 
-            anomaliaService.save(a);
+            anomaliaService.saveFromAI(a, severity);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body("Anomalia salvata correttamente: " + tipoAnomalia.name());
+            return ResponseEntity.status(HttpStatus.CREATED).body("Anomalia salvata (ed eventualmente mandata su Telegram) correttamente: " + tipoAnomalia.name());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore salvataggio anomalia: " + e.getMessage());

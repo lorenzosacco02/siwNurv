@@ -11,5 +11,11 @@ public enum TipoDiAnomalia {
 	PALO_INCLINATO,
 	VEGETAZIONE_VICINA,
 	SASSO_SU_BINARIO,
-	ALTRO, // Per i casi UNKNOWN_OBJECT o ALTRO
+
+	//Nuovi oggetti dinamici specifici da YOLOv8
+	PERSONA_SUI_BINARI,
+	ANIMALE_SUI_BINARI,
+	VEICOLO,
+
+	ALTRO // Per i casi UNKNOWN_OBJECT o ALTRO
 }
