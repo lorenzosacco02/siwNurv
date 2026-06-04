@@ -3,6 +3,7 @@ package it.uniroma3.siw.repository;
 import java.util.List;
 
 import it.uniroma3.siw.model.TipoDiAnomalia;
+import it.uniroma3.siw.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -11,6 +12,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface TrattaRepository extends CrudRepository<Tratta, Long> {
     List<Tratta> findByNomeContainingIgnoreCase(String nome);
+
+    Tratta findBySupervisor(User supervisor);
 
     @Query(value = """
             SELECT DISTINCT t.* 
@@ -31,7 +34,19 @@ public interface TrattaRepository extends CrudRepository<Tratta, Long> {
             """, nativeQuery = true)
     Iterable<Tratta> findByCriteria(@Param("nome") String nome, @Param("anomalia") String anomalia);
 
+    @Query(value = """
+    SELECT t.* FROM tratta t
+    JOIN video v ON v.tratta_id = t.id
+    WHERE LOWER(REPLACE(v.nome, ' ', '')) = LOWER(REPLACE(:nomeVideo, ' ', ''))
+    LIMIT 1
+    """, nativeQuery = true)
+    Tratta findByNomeVideo(@Param("nomeVideo") String nomeVideo);
+
 
     @Query(value = "SELECT * FROM tratta WHERE LOWER(REPLACE(nome, ' ', '')) LIKE :name", nativeQuery = true)
     Tratta getByNomeIgnoreCaseSpaceInsensitive(@Param("name") String name);
+
+    @Query("SELECT t FROM Tratta t JOIN t.operatori o WHERE o = :operatore")
+    Tratta findByOperatore(@Param("operatore") User operatore);
+
 }

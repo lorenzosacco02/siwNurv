@@ -55,6 +55,9 @@ public class Anomalia {
 	@ManyToOne
 	private Video video;
 
+	@ManyToOne
+	private Acquirente acquirente;
+
 	// ------------------------------------
 	// METODI equals() e hashCode() ORIGINALI
 	// ------------------------------------
@@ -130,5 +133,6 @@ public class Anomalia {
 	public String getSorgenteVideoIA() { return sorgenteVideoIA; }
 	public void setSorgenteVideoIA(String sorgenteVideoIA) { this.sorgenteVideoIA = sorgenteVideoIA; }
 
-
+	public Acquirente getAcquirente(){ return acquirente; }
+	public void setAcquirente(Acquirente acquirente){ this.acquirente = acquirente; }
 }

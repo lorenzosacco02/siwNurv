@@ -1,6 +1,9 @@
 package it.uniroma3.siw.service;
 
+import it.uniroma3.siw.model.Acquirente;
 import it.uniroma3.siw.model.Anomalia;
+import it.uniroma3.siw.model.Tratta;
+import it.uniroma3.siw.repository.AcquirenteRepository;
 import it.uniroma3.siw.repository.AnomaliaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,9 @@ public class AnomaliaService {
     @Autowired
     private TelegramService telegramService; // Il servizio Telegram
 
+    @Autowired
+    private TrattaService trattaService;
+
     @Transactional
     public void save(Anomalia anomalia) {
         anomaliaRepository.save(anomalia);
@@ -23,18 +29,30 @@ public class AnomaliaService {
     *Salva l'anomalia inviata dall'IA nel database e valuta se inoltrarla nel canale Telegram
      */
     @Transactional
-    public void saveFromAI(Anomalia anomalia, String severitaOriginale){
-        //1. Salva l'anomalia nel DB PostgreSQL
+    public void saveFromAI(Anomalia anomalia, String severitaOriginale, String chatIdDalPayload){
+        //2. Salva l'anomalia nel DB PostgreSQL
         anomaliaRepository.save(anomalia);
 
-        //2. Logica di filtraggio proattivo: inviamo su Telegram solo i report più urgenti
+        //3. Logica di filtraggio proattivo: inviamo su Telegram solo i report più urgenti
         if("CRITICA".equalsIgnoreCase(severitaOriginale) || "ALTA".equalsIgnoreCase(severitaOriginale)) {
-            String tipo = (anomalia.getTipoAnomalia()!=null) ? anomalia.getTipoAnomalia().toString() : "NON SPECIFICATO";
-            String dettagli = (anomalia.getDettagliTecnici() != null) ? anomalia.getDettagliTecnici() : "NESSUN DETTAGLIO EXTRA FORNITO.";
-            String video = (anomalia.getSorgenteVideoIA() != null) ? anomalia.getSorgenteVideoIA() : "SCONOSCIUTO";
+            String chatId= null;
+            if(anomalia.getSorgenteVideoIA()!=null){
+                Tratta tratta = trattaService.getByNomeVideo(anomalia.getSorgenteVideoIA());
+                if(tratta!=null && tratta.getTelegramChatId()!=null){
+                    chatId = tratta.getTelegramChatId();
+                }
+            }
+            //if (anomalia.getAcquirente() != null && anomalia.getAcquirente().getTelegramChatId() != null) {
+            if(chatId!=null && !chatId.isEmpty()){
 
-            //Innesca l'invio asincrono
-            telegramService.inviaAlertCritico(tipo, severitaOriginale.toUpperCase(),dettagli, video);
+                //String chatId = anomalia.getAcquirente().getTelegramChatId();
+                //String tipo = (anomalia.getTipoAnomalia() != null) ? anomalia.getTipoAnomalia().toString() : "NON SPECIFICATO";
+                //String dettagli = (anomalia.getDettagliTecnici() != null) ? anomalia.getDettagliTecnici() : "NESSUN DETTAGLIO EXTRA FORNITO.";
+                //String video = (anomalia.getSorgenteVideoIA() != null) ? anomalia.getSorgenteVideoIA() : "SCONOSCIUTO";
+
+                //Innesca l'invio asincrono
+                telegramService.inviaAlertCritico(chatId, (anomalia.getTipoAnomalia()!=null ? anomalia.getTipoAnomalia().toString() : "Generic"), severitaOriginale.toUpperCase(), anomalia.getDettagliTecnici(), anomalia.getSorgenteVideoIA());
+            }
         }
     }
 

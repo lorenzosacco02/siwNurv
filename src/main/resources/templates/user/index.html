@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -16,6 +16,21 @@
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
+<!-- BANNER TELEGRAM per operatori assegnati a una tratta -->
+<div th:if="${trattaOperatore != null and trattaOperatore.telegramInviteLink != null}"
+     class="alert alert-info d-flex justify-content-between align-items-center mx-4 mt-3"
+     style="border-radius: 12px;">
+    <span>
+        <i class="bi bi-telegram me-2"></i>
+        Sei assegnato alla tratta <strong th:text="${trattaOperatore.nome}"></strong>.
+        Unisciti al gruppo Telegram per ricevere gli alert in tempo reale!
+    </span>
+    <a th:href="${trattaOperatore.telegramInviteLink}"
+       target="_blank"
+       class="btn btn-sm btn-primary ms-3">
+        <i class="bi bi-telegram me-1"></i> Unisciti
+    </a>
+</div>
 
 <form method="get" th:action="@{/search}">
     <div class="row mb-4 align-items-end">
@@ -89,5 +104,6 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

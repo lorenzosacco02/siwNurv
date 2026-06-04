@@ -22,6 +22,18 @@ public class Tratta {
 	@OneToMany(mappedBy="tratta", cascade=CascadeType.REMOVE)
 	private List<Video> videoAssociati;
 
+	@ManyToMany
+	private List<User> operatori;
+
+	public List<User> getOperatori(){	return operatori;}
+	public void setOperatori(List<User> operatori){	this.operatori = operatori;}
+
+	private String telegramChatId;
+	private String telegramInviteLink;
+
+	@OneToOne
+	private User supervisor;		//utente responsabile di questa tratta
+
 	public Long getId() {
 		return id;
 	}
@@ -70,6 +82,15 @@ public class Tratta {
 		Tratta other = (Tratta) obj;
 		return Objects.equals(descrizione, other.descrizione) && Objects.equals(nome, other.nome);
 	}
+
+	public String getTelegramChatId(){return telegramChatId;}
+	public void setTelegramChatId(String telegramChatId){this.telegramChatId=telegramChatId;}
+
+	public String getTelegramInviteLink(){return telegramInviteLink;}
+	public void setTelegramInviteLink(String telegramInviteLink){this.telegramInviteLink = telegramInviteLink;}
+
+	public User getSupervisor(){return supervisor;}
+	public void setSupervisor(User supervisor){this.supervisor = supervisor;}
 
 
 }

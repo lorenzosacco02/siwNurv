@@ -19,6 +19,22 @@
 <!-- Navbar -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
+<!-- Banner Telegram per operatori assegnati -->
+<div th:if="${trattaOperatore != null and trattaOperatore.telegramInviteLink != null}"
+     class="alert alert-info d-flex justify-content-between align-items-center mx-4 mt-3"
+     style="border-radius: 12px;">
+    <span>
+        <i class="bi bi-telegram me-2"></i>
+        Sei assegnato alla tratta <strong th:text="${trattaOperatore.nome}"></strong>.
+        Unisciti al gruppo Telegram per ricevere gli alert!
+    </span>
+    <a th:href="${trattaOperatore.telegramInviteLink}"
+       target="_blank"
+       class="btn btn-sm btn-primary ms-3">
+        <i class="bi bi-telegram me-1"></i> Unisciti
+    </a>
+</div>
+
 <!-- Profilo Utente -->
 <div class="container my-5">
     <div class="row justify-content-center">

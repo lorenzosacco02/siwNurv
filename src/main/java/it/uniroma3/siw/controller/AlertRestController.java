@@ -3,6 +3,7 @@ package it.uniroma3.siw.controller;
 import it.uniroma3.siw.model.Anomalia;
 import it.uniroma3.siw.model.TipoDiAnomalia;
 import it.uniroma3.siw.model.Video;
+import it.uniroma3.siw.repository.AcquirenteRepository;
 import it.uniroma3.siw.service.AnomaliaService;
 import it.uniroma3.siw.service.VideoService;
 import it.uniroma3.siw.service.UserService;
@@ -60,9 +61,6 @@ public class AlertRestController {
 
             // Mappatura Video (Logica semplificata: cerca video per ID, se non fornito, video rimane null)
             Video video = null;
-            if (payload.videoId != null) {
-                video = videoService.getById(payload.videoId);
-            }
 
             // Creazione Anomalia
             Anomalia a = new Anomalia();
@@ -71,6 +69,7 @@ public class AlertRestController {
             TipoDiAnomalia tipoAnomalia = mapLabelToEnum(payload.label);
             a.setTipoAnomalia(tipoAnomalia);
             a.setDescrizione("IA: " + payload.label);
+            a.setVideo(video);
 
             // 2. Mappatura Gravità (Stringa e Intero)
             String severity = payload.severity != null ? payload.severity.toUpperCase() : "UNKNOWN";
@@ -99,11 +98,10 @@ public class AlertRestController {
             // 6. Assegnazione Entità
             a.setVideo(video);
 
-            anomaliaService.saveFromAI(a, severity);
+            anomaliaService.saveFromAI(a, severity, payload.getChatId());
 
             return ResponseEntity.status(HttpStatus.CREATED).body("Anomalia salvata (ed eventualmente mandata su Telegram) correttamente: " + tipoAnomalia.name());
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Errore salvataggio anomalia: " + e.getMessage());
         }
     }

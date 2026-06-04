@@ -38,5 +38,11 @@ public class GlobalController {
                 .anyMatch(a -> a.getAuthority().equals("ADMIN"));
     }
 
+    @ModelAttribute("isSupervisor")
+    public boolean isSupervisor(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null && auth.getAuthorities().stream().anyMatch(a->a.getAuthority().equals("SUPERVISOR"));
+    }
+
 
 }

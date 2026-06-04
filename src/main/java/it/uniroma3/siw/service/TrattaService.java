@@ -2,6 +2,7 @@ package it.uniroma3.siw.service;
 
 import it.uniroma3.siw.model.TipoDiAnomalia;
 import it.uniroma3.siw.model.Tratta;
+import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.repository.TrattaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,5 +101,23 @@ public class TrattaService {
     public Tratta getByName(String name) {
         return this.trattaRepository.getByNomeIgnoreCaseSpaceInsensitive(name.replace(" ", "").toLowerCase());
     }
+
+    @Transactional
+    public Tratta getByNomeVideo(String nomeVideo) {
+        // rimuove estensione .mp4 se presente
+        String nome = nomeVideo.replace(".mp4", "").replace(".MP4", "");
+        return trattaRepository.findByNomeVideo(nome);
+    }
+
+    @Transactional
+    public Tratta getBySupervisor(User supervisor) {
+        return trattaRepository.findBySupervisor(supervisor);
+    }
+
+    @Transactional
+    public Tratta getByOperatore(User operatore){
+        return trattaRepository.findByOperatore(operatore);
+    }
+
 }
 

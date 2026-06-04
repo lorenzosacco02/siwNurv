@@ -1,5 +1,7 @@
 package it.uniroma3.siw.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
 // Classe per rappresentare il Bounding Box
@@ -25,6 +27,9 @@ public class AlertDtoController {
     public String details;  // Dettagli tecnici
     public String source_video;
     public Long videoId; // Opzionale
+    public String chatId;
 
     // Getters/Setters omessi per brevità
+    public void setChatId(String chatId){ this.chatId = chatId;}
+    public String getChatId(){ return chatId;}
 }

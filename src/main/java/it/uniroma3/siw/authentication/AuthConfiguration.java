@@ -68,6 +68,10 @@ public class AuthConfiguration {
                 // pagine e risorse su cui solo gli ADMIN possono fare POST
                 .requestMatchers(HttpMethod.POST,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
 
+                // pagine SUPERVISOR
+                .requestMatchers(HttpMethod.GET,"/supervisor/**").hasAnyAuthority(SUPERVISOR_ROLE, ADMIN_ROLE)
+                .requestMatchers(HttpMethod.POST,"/supervisor/**").hasAnyAuthority(SUPERVISOR_ROLE, ADMIN_ROLE)
+
                 // pagine non elencate sopra richiedono auth (autenticato come ADMIN o come DEFAULT)
                 .anyRequest().authenticated()
 

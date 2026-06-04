@@ -1,5 +1,6 @@
 package it.uniroma3.siw.service;
 
+import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Image;
 import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.repository.UserRepository;
@@ -104,5 +105,13 @@ public class UserService {
             e.printStackTrace();
             return Collections.emptyList();
         }
+    }
+
+    @Transactional
+    public List<User> getAllDefaultUsers() {
+        return credentialsService.getAllByRole(Credentials.DEFAULT_ROLE)
+                .stream()
+                .map(Credentials::getUser)
+                .collect(Collectors.toList());
     }
 }

@@ -1,12 +1,14 @@
 package it.uniroma3.siw.service;
 
 import it.uniroma3.siw.model.Credentials;
+import it.uniroma3.siw.model.User;
 import it.uniroma3.siw.repository.CredentialsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,5 +43,20 @@ public class CredentialsService {
     @Transactional
     public boolean credentialsExistsByUsername(String username) {
         return this.credentialsRepository.findByUsername(username).isPresent();
+    }
+
+    @Transactional
+    public Credentials getCredentialsByUser(User user) {
+        return credentialsRepository.findByUser(user).orElse(null);
+    }
+
+    @Transactional
+    public void save(Credentials credentials) {
+        credentialsRepository.save(credentials);
+    }
+
+    @Transactional
+    public List<Credentials> getAllByRole(String role) {
+        return credentialsRepository.findByRole(role);
     }
 }

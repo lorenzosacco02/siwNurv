@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import it.uniroma3.siw.model.Tratta;
+import it.uniroma3.siw.service.TrattaService;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,10 +36,19 @@ public class UserController {
     private UserService userService;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private TrattaService trattaService;
 
     @GetMapping("/profile")
     public String getAllBooks(Model model) {
-        model.addAttribute("user" ,userService.getCurrentUser());
+        User currentUser = userService.getCurrentUser();
+        model.addAttribute("user", currentUser);
+
+        Tratta trattaOperatore = trattaService.getByOperatore(currentUser);
+        if (trattaOperatore != null) {
+            model.addAttribute("trattaOperatore", trattaOperatore);
+        }
+
         return "user/profile";
     }
 

@@ -5,7 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync; //
 
 @SpringBootApplication
-@EnableAsync //
+
+@EnableAsync(proxyTargetClass = true) //lo uso per poter gestire lettura e scrittura di messaggi del bot dalla sola classe
+									// TelegramService piuttosto che dividere in due classi
 public class SiwNurvApplication {
 
 	public static void main(String[] args) {

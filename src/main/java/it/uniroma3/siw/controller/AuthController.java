@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import it.uniroma3.siw.model.Tratta;
 
 import java.util.Comparator;
 import java.util.List;
@@ -69,8 +70,15 @@ public class AuthController {
 				return "user/admin/index";
 			}
 			if (credentials != null && credentials.getRole().equals(Credentials.DEFAULT_ROLE)) {
+				User currentUser = userService.getCurrentUser();
+				Tratta trattaOperatore = trattaService.getByOperatore(currentUser);
+
+				if(trattaOperatore!=null){
+					// operatore assegnato ad una tratta
+					model.addAttribute("trattaOperatore", trattaOperatore);
+				}
 				model.addAttribute("tratte", trattaService.getAll());
-				model.addAttribute("user", userService.getCurrentUser());
+				model.addAttribute("user", currentUser);
 				return "user/index";
 			}
 		}
@@ -111,6 +119,19 @@ public class AuthController {
 		model.addAttribute("user", user);
 		return "login";
 	}
+	/*
+	@GetMapping("/profile")
+	public String getAllBooks(Model model) {
+		User currentUser = userService.getCurrentUser();
+		model.addAttribute("user", currentUser);
 
+		// Passa la tratta dell'operatore se esiste
+		Tratta trattaOperatore = trattaService.getByOperatore(currentUser);
+		if (trattaOperatore != null) {
+			model.addAttribute("trattaOperatore", trattaOperatore);
+		}
 
+		return "user/profile";
+	}
+	 */
 }
