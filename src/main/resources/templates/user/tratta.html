@@ -35,7 +35,6 @@
             <div th:each="video, iterStat : ${tratta.videoAssociati}"
                  th:class="'carousel-item' + (${iterStat.index == 0} ? ' active' : '')">
 
-                <!-- Video -->
                 <!-- Video con frecce sovrapposte -->
                 <div class="video-wrapper position-relative mb-3">
                     <div class="ratio ratio-16x9">
@@ -52,7 +51,6 @@
                     </button>
                 </div>
 
-
                 <!-- Info -->
                 <div class="video-info mb-3 text-center">
                     <h5 th:text="${video.nome}">Titolo video</h5>
@@ -60,12 +58,24 @@
                            th:text="${#temporals.format(video.data, 'dd/MM/yyyy')}">01/01/2025</small>
                 </div>
 
-                <!-- Bottone anomalia -->
-                <div class="text-center mb-4">
-                    <a th:href="@{'/video/' + ${video.id} + '/addAnomalia'}"
+                <!-- Bottoni azione video -->
+                <div class="text-center mb-4 d-flex justify-content-center gap-2">
+                    <!-- Segnala anomalia: nascosto al supervisor -->
+                    <a th:unless="${isSupervisor}"
+                       th:href="@{'/video/' + ${video.id} + '/addAnomalia'}"
                        class="btn btn-danger anomaly-btn" title="Aggiungi anomalia">
                         <i class="bi bi-exclamation-triangle-fill"></i> Segnala anomalia
                     </a>
+
+                    <!-- Elimina video: solo admin o supervisor -->
+                    <form th:if="${isAdmin or isSupervisor}"
+                          th:action="@{'/admin/deleteVideo/' + ${video.id}}" method="post"
+                          onsubmit="return confirm('Sei sicuro di voler eliminare questo video e tutte le sue anomalie?');"
+                          class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger" title="Elimina video">
+                            <i class="bi bi-trash"></i> Elimina video
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Anomalie -->
@@ -81,7 +91,7 @@
                                     <span th:text="${anomalia.descrizione}">Descrizione</span><br/>
                                     <small class="text-muted">
                                         Segnalata da:
-                                        <span th:text="${anomalia.user.name} + ' ' + ${anomalia.user.surname}">Mario Rossi</span>
+                                        <span th:text="${anomalia.user != null} ? (${anomalia.user.name} + ' ' + ${anomalia.user.surname}) : 'IA'">Mario Rossi</span>
                                     </small>
                                 </div>
 

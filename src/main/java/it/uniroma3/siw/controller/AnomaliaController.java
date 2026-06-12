@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @Controller
 public class AnomaliaController {
@@ -29,6 +31,11 @@ public class AnomaliaController {
 
     @GetMapping("/video/{videoId}/addAnomalia")
     public String aggiungiAnomalia(@PathVariable Long videoId, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isSupervisor = auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("SUPERVISOR"));
+        if (isSupervisor) {
+            return "redirect:/";
+        }
         model.addAttribute("anomalia", new Anomalia());
         model.addAttribute("video_id", videoId);
         model.addAttribute("user", userService.getCurrentUser());
@@ -41,6 +48,12 @@ public class AnomaliaController {
                                 @Valid @ModelAttribute Anomalia anomalia,
                                 BindingResult bindingResult,
                                 Model model) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isSupervisor = auth.getAuthorities().stream().anyMatch(a->a.getAuthority().equals("SUPERVISOR"));
+        if(isSupervisor){
+            return "redirect:/";
+        }
 
         anomalia.setTipoAnomalia(tipoAnomalia); //la setto prima così posso validarla
 

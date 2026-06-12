@@ -3,11 +3,13 @@ package it.uniroma3.siw.service;
 import it.uniroma3.siw.model.Acquirente;
 import it.uniroma3.siw.model.Anomalia;
 import it.uniroma3.siw.model.Tratta;
+import it.uniroma3.siw.model.Video;
 import it.uniroma3.siw.repository.AcquirenteRepository;
 import it.uniroma3.siw.repository.AnomaliaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class AnomaliaService {
@@ -20,6 +22,9 @@ public class AnomaliaService {
     @Autowired
     private TrattaService trattaService;
 
+    @Autowired
+    private VideoService videoService;
+
     @Transactional
     public void save(Anomalia anomalia) {
         anomaliaRepository.save(anomalia);
@@ -30,17 +35,25 @@ public class AnomaliaService {
      */
     @Transactional
     public void saveFromAI(Anomalia anomalia, String severitaOriginale, String chatIdDalPayload){
+        Tratta tratta = null;
+        if(anomalia.getSorgenteVideoIA()!=null){
+            tratta = trattaService.getByNomeVideo(anomalia.getSorgenteVideoIA());
+            if(tratta!=null){
+                Video video = videoService.getByNomeInTratta(anomalia.getSorgenteVideoIA(), tratta);
+                if(video!=null){
+                    anomalia.setVideo(video);
+                }
+            }
+        }
+
         //2. Salva l'anomalia nel DB PostgreSQL
         anomaliaRepository.save(anomalia);
 
         //3. Logica di filtraggio proattivo: inviamo su Telegram solo i report più urgenti
         if("CRITICA".equalsIgnoreCase(severitaOriginale) || "ALTA".equalsIgnoreCase(severitaOriginale)) {
             String chatId= null;
-            if(anomalia.getSorgenteVideoIA()!=null){
-                Tratta tratta = trattaService.getByNomeVideo(anomalia.getSorgenteVideoIA());
-                if(tratta!=null && tratta.getTelegramChatId()!=null){
-                    chatId = tratta.getTelegramChatId();
-                }
+            if(tratta!=null && tratta.getTelegramChatId()!=null){
+                chatId = tratta.getTelegramChatId();
             }
             //if (anomalia.getAcquirente() != null && anomalia.getAcquirente().getTelegramChatId() != null) {
             if(chatId!=null && !chatId.isEmpty()){

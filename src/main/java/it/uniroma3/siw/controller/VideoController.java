@@ -14,12 +14,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -57,7 +59,18 @@ public class VideoController {
 
     @GetMapping("/admin/addVideo")
     public String addVideo(Model model) {
-        model.addAttribute("user", userService.getCurrentUser());
+        User currentUser = userService.getCurrentUser();
+        boolean isSupervisor = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(a->a.getAuthority().equals("SUPERVISOR"));
+        if(isSupervisor){
+            Tratta tratta = trattaService.getBySupervisor(currentUser);
+            if(tratta == null) return "redirect:/";
+            model.addAttribute("video", new Video());
+            model.addAttribute("user", currentUser);
+//            model.addAttribute("tratta", tratta);
+            model.addAttribute("tratta_id", tratta.getId());
+            return "user/admin/formNewVideo";
+        }
+        model.addAttribute("user", currentUser);
         model.addAttribute("tratte" , trattaService.getAll());
         return "user/admin/selectTratta";
     }
@@ -66,7 +79,7 @@ public class VideoController {
     public String addVideoTratta(@PathVariable Long tratta_id, Model model) {
         model.addAttribute("video", new Video());
         model.addAttribute("user", userService.getCurrentUser());
-        model.addAttribute("tratta", tratta_id);
+        model.addAttribute("tratta_id", tratta_id);
         return "user/admin/formNewVideo";
     }
 
@@ -76,8 +89,18 @@ public class VideoController {
                               @PathVariable Long tratta_id,
                               Model model) throws IOException {
 
+        User currentUser = userService.getCurrentUser();
+        boolean isSupervisor = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(a->a.getAuthority().equals("SUPERVISOR"));
+
+        if(isSupervisor){
+            Tratta trattaSupervisor = trattaService.getBySupervisor(currentUser);
+            System.out.println(">>> DEBUG trattaSupervisor=" + (trattaSupervisor == null ? "NULL" : trattaSupervisor.getId()) + " | tratta_id=" + tratta_id);
+            if(trattaSupervisor == null || !trattaSupervisor.getId().equals(tratta_id)){
+                return "redirect:/accessDenied";
+            }
+        }
         video.setTratta(trattaService.getById(tratta_id));
-        video.setUser(userService.getCurrentUser());
+        video.setUser(currentUser);
 
         videoValidator.validate(video, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -91,6 +114,24 @@ public class VideoController {
         videoService.save(video);
 
         return "redirect:/tratta/" + tratta_id;
+    }
+
+    @PostMapping("/admin/deleteVideo/{id}")
+    public String deleteVideo(@PathVariable Long id){
+        Video video = videoService.getById(id);
+        if(video == null){
+            return "redirect:/";
+        }
+        Long trattaId = video.getTratta().getId();
+        boolean isSupervisor = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(a->a.getAuthority().equals("SUPERVISOR"));
+        if(isSupervisor){
+            Tratta trattaSupervisor = trattaService.getBySupervisor(userService.getCurrentUser());
+            if(trattaSupervisor==null || !trattaSupervisor.getId().equals(trattaId)){
+                return "redirect:/accessDenied";
+            }
+        }
+        videoService.delete(video);
+        return "redirect:/tratta/" + trattaId;
     }
 
 

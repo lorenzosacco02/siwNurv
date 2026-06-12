@@ -62,17 +62,21 @@ public class AuthController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication instanceof AnonymousAuthenticationToken) {
 			return "index";
-		} else {
-			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
-			if (credentials != null && credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
-				model.addAttribute("user", userService.getCurrentUser());
-				return "user/admin/index";
-			}
-			if (credentials != null && credentials.getRole().equals(Credentials.DEFAULT_ROLE)) {
-				User currentUser = userService.getCurrentUser();
-				Tratta trattaOperatore = trattaService.getByOperatore(currentUser);
-
+		}
+		User currentUser = userService.getCurrentUser();
+		Credentials credentials = credentialsService.getCredentialsByUser(currentUser);
+		if (credentials != null && credentials.getRole().equals(Credentials.ADMIN_ROLE)) {
+			model.addAttribute("user", currentUser);
+			return "user/admin/index";
+		}
+		if (credentials != null && credentials.getRole().equals(Credentials.SUPERVISOR_ROLE)) {
+			Tratta tratta = trattaService.getBySupervisor(currentUser);
+			model.addAttribute("user", currentUser);
+			model.addAttribute("tratta", tratta);
+			return "user/supervisor/index";
+		}
+		if (credentials != null && credentials.getRole().equals(Credentials.DEFAULT_ROLE)) {
+			Tratta trattaOperatore = trattaService.getByOperatore(currentUser);
 				if(trattaOperatore!=null){
 					// operatore assegnato ad una tratta
 					model.addAttribute("trattaOperatore", trattaOperatore);
@@ -81,7 +85,7 @@ public class AuthController {
 				model.addAttribute("user", currentUser);
 				return "user/index";
 			}
-		}
+
 		return "index";
 	}
 

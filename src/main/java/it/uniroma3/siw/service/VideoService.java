@@ -24,4 +24,8 @@ public class VideoService {
     public Video getByNomeInTratta(String nome, Tratta tratta) {
         return videoRepository.findByNomeInTratta(nome.replace(" ", "").toLowerCase(), tratta.getId());
     }
+
+    public void delete(Video video){
+        this.videoRepository.delete(video);
+    }
 }

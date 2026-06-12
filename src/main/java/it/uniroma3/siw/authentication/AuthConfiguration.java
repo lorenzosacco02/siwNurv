@@ -49,7 +49,7 @@ public class AuthConfiguration {
     protected SecurityFilterChain configure(final HttpSecurity httpSecurity)
             throws Exception{
         httpSecurity
-                // ❗ SOLUZIONE: Disabilita CSRF solo per l'endpoint API alert
+                // Disabilita CSRF solo per l'endpoint API alert
                 // Altrimenti, Spring Security reindirizza la richiesta POST anonima a /login.
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/api/alerts"))
@@ -61,18 +61,29 @@ public class AuthConfiguration {
                 // pagine e risorse su cui tutti possono fare GET
                 .requestMatchers(HttpMethod.GET,"/","/login","/register","/index","/css/**", "/images/**", "favicon.ico").permitAll()
                 // pagine e risorse su cui tutti possono fare POST
-                .requestMatchers(HttpMethod.POST,"/search","/register","/login","/api/alerts").permitAll() // ✅ /api/alerts è qui
+                .requestMatchers(HttpMethod.POST,"/search","/register","/login","/api/alerts").permitAll()
+
+                // ====== REGOLE SUPERVISOR (devono stare PRIMA di /admin/**) ======
+
+                // pagine SUPERVISOR
+                .requestMatchers(HttpMethod.GET,"/supervisor/**").hasAnyAuthority(SUPERVISOR_ROLE, ADMIN_ROLE)
+                .requestMatchers(HttpMethod.POST,"/supervisor/**").hasAnyAuthority(SUPERVISOR_ROLE, ADMIN_ROLE)
+
+                // addVideo accessibile anche ai SUPERVISOR (path esatto + sottopercorsi)
+                // DEVONO stare PRIMA di /admin/** altrimenti vengono catturate da quella regola
+                .requestMatchers(HttpMethod.GET, "/admin/addVideo").hasAnyAuthority(ADMIN_ROLE, SUPERVISOR_ROLE)
+                .requestMatchers(HttpMethod.GET, "/admin/addVideo/**").hasAnyAuthority(ADMIN_ROLE, SUPERVISOR_ROLE)
+                .requestMatchers(HttpMethod.POST, "/admin/addVideo/**").hasAnyAuthority(ADMIN_ROLE, SUPERVISOR_ROLE)
+                .requestMatchers(HttpMethod.POST, "/admin/deleteVideo/**").hasAnyAuthority(ADMIN_ROLE, SUPERVISOR_ROLE)
+
+                // ====== REGOLE ADMIN (catch-all, vanno DOPO le regole più specifiche) ======
 
                 // pagine e risorse su cui solo gli ADMIN possono fare GET
                 .requestMatchers(HttpMethod.GET,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
                 // pagine e risorse su cui solo gli ADMIN possono fare POST
                 .requestMatchers(HttpMethod.POST,"/admin/**").hasAnyAuthority(ADMIN_ROLE)
 
-                // pagine SUPERVISOR
-                .requestMatchers(HttpMethod.GET,"/supervisor/**").hasAnyAuthority(SUPERVISOR_ROLE, ADMIN_ROLE)
-                .requestMatchers(HttpMethod.POST,"/supervisor/**").hasAnyAuthority(SUPERVISOR_ROLE, ADMIN_ROLE)
-
-                // pagine non elencate sopra richiedono auth (autenticato come ADMIN o come DEFAULT)
+                // pagine non elencate sopra richiedono autenticazione
                 .anyRequest().authenticated()
 
                 // se utente tenta di accedere a contenuto per cui non ha permesso viene reindirizzato qui
@@ -87,7 +98,7 @@ public class AuthConfiguration {
                 .defaultSuccessUrl("/profile",true)
                 .failureUrl("/login?error=true")
 
-                // 👉 CREA NUOVA SESSIONE:
+                // CREA NUOVA SESSIONE:
                 .and().sessionManagement()
                 .sessionFixation().newSession()
 
@@ -100,7 +111,6 @@ public class AuthConfiguration {
                                 .userService(customOAuth2UserService)
                         )
                 )
-
 
                 // LOGOUT:
                 .logout()

@@ -59,7 +59,7 @@
             <li>Crea un nuovo gruppo Telegram e dagli un nome (es. <em>NURV - Tratta A</em>)</li>
             <li>Aggiungi il bot <strong>@NurvMonitorBot</strong> al gruppo come <strong>amministratore</strong></li>
             <li>Invia un messaggio qualsiasi nel gruppo (es. "test")</li>
-            <li>Apri nel browser: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code> e copia il <strong>chat.id</strong> del gruppo (è un numero negativo, es. <code>-1001234567890</code>)</li>
+            <li>Apri nel browser: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code> e copia il <strong>chat.id</strong> del gruppo (è un numero negativo, es. <code>-1234567890</code>)</li>
             <li>Vai su <em>Aggiungi persone</em> → <em>Invita tramite link</em> e copia il link</li>
             <li>Inserisci Chat ID e Link qui sotto e salva</li>
         </ol>
@@ -72,9 +72,9 @@
             <div class="mb-3">
                 <label class="form-label fw-bold">Chat ID del gruppo Telegram</label>
                 <input type="text" name="chatId" class="form-control"
-                       placeholder="es. -1001234567890"
+                       placeholder="es. -1234567890"
                        th:value="${tratta.telegramChatId}" required/>
-                <div class="form-text">È un numero negativo che inizia con -100</div>
+                <div class="form-text">È un numero negativo che inizia con -</div>
             </div>
             <div class="mb-3">
                 <label class="form-label fw-bold">Link di invito al gruppo</label>
