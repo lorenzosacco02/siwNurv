@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Service
 public class AnomaliaService {
@@ -35,7 +37,20 @@ public class AnomaliaService {
      */
     @Transactional
     public void saveFromAI(Anomalia anomalia, String severitaOriginale, String chatIdDalPayload){
-        Tratta tratta = null;
+        Tratta tratta = anomalia.getTratta();
+
+        if(tratta == null && anomalia.getSorgenteVideoIA()!=null){
+            tratta = trattaService.getByNomeVideo(anomalia.getSorgenteVideoIA());
+            anomalia.setTratta(tratta);
+        }
+        if(tratta!=null && anomalia.getSorgenteVideoIA()!=null){
+            Video video = videoService.getByNomeInTratta(anomalia.getSorgenteVideoIA(),tratta);
+            if(video!=null){
+                anomalia.setVideo(video);
+            }
+        }
+        anomaliaRepository.save(anomalia);
+        /*
         if(anomalia.getSorgenteVideoIA()!=null){
             tratta = trattaService.getByNomeVideo(anomalia.getSorgenteVideoIA());
             if(tratta!=null){
@@ -48,6 +63,7 @@ public class AnomaliaService {
 
         //2. Salva l'anomalia nel DB PostgreSQL
         anomaliaRepository.save(anomalia);
+         */
 
         //3. Logica di filtraggio proattivo: inviamo su Telegram solo i report più urgenti
         if("CRITICA".equalsIgnoreCase(severitaOriginale) || "ALTA".equalsIgnoreCase(severitaOriginale)) {
@@ -77,6 +93,12 @@ public class AnomaliaService {
     @Transactional(readOnly = true)
     public Iterable<Anomalia> getAll() {
         return anomaliaRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Anomalia> getByTratta(Tratta tratta){
+        if(tratta==null) return java.util.Collections.emptyList();
+        return anomaliaRepository.findByTrattaOrderByIdDesc(tratta);
     }
 
 

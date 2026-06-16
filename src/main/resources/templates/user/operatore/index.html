@@ -2,11 +2,11 @@
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Supervisor</title>
+    <title>Dashboard Operatore</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="/css/style.css"/>
-    <link rel="stylesheet" href="/css/navbar.css"/>
+    <link rel="stylesheet" href="/css/global.css"/>
+    <link rel="stylesheet" href="/css/navbarDark.css"/>
 </head>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
@@ -16,13 +16,13 @@
     <!-- Header -->
     <div class="mb-4">
         <h2 class="fw-bold" style="color: #8B0000;">
-            <i class="bi bi-speedometer2 me-2"></i>Dashboard Supervisor
+            <i class="bi bi-speedometer2 me-2"></i>La tua Dashboard
         </h2>
         <p class="text-muted" th:if="${tratta != null}">
             Tratta assegnata: <strong th:text="${tratta.nome}"></strong>
         </p>
         <p class="text-danger" th:if="${tratta == null}">
-            Nessuna tratta assegnata. Contatta l'amministratore.
+            Non sei ancora assegnato a nessuna tratta. Contatta il tuo supervisor.
         </p>
     </div>
 
@@ -88,67 +88,33 @@
             </div>
         </div>
 
-        <!-- COLONNA DESTRA: Card azioni -->
+        <!-- COLONNA DESTRA: Card Telegram -->
         <div class="col-lg-4 d-flex flex-column gap-3">
-
-            <!-- Card Configura Telegram -->
             <div class="card shadow-sm" style="border-left: 4px solid #0088cc;">
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-2">
                         <i class="bi bi-telegram fs-3 me-3" style="color: #0088cc;"></i>
                         <div>
-                            <h6 class="fw-bold mb-0">Configura Telegram</h6>
-                            <small class="text-muted">Chat ID e link di invito</small>
+                            <h6 class="fw-bold mb-0">Gruppo Telegram</h6>
+                            <small class="text-muted">Alert in tempo reale</small>
                         </div>
                     </div>
                     <p class="text-muted small mb-3">
-                        Configura il gruppo Telegram per ricevere gli alert automatici della tua tratta.
+                        Unisciti al gruppo Telegram della tua tratta per ricevere gli alert delle anomalie direttamente sul tuo telefono.
                     </p>
-                    <a href="/supervisor/configuraTelegram" class="btn btn-sm w-100"
-                       style="background-color: #0088cc; color: white;">
-                        <i class="bi bi-gear-fill me-1"></i> Configura
-                    </a>
-                </div>
-            </div>
 
-            <!-- Card Gestisci Operatori -->
-            <div class="card shadow-sm" style="border-left: 4px solid #8B0000;">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                        <i class="bi bi-people-fill fs-3 me-3" style="color: #8B0000;"></i>
-                        <div>
-                            <h6 class="fw-bold mb-0">Gestisci Operatori</h6>
-                            <small class="text-muted">Assegna o rimuovi operatori</small>
-                        </div>
-                    </div>
-                    <p class="text-muted small mb-3">
-                        Aggiungi o rimuovi operatori dalla tua tratta e condividi il link Telegram.
-                    </p>
-                    <a href="/supervisor/configuraTelegram" class="btn btn-sm w-100"
-                       style="background-color: #8B0000; color: white;">
-                        <i class="bi bi-person-gear me-1"></i> Gestisci
+                    <!-- Link disponibile -->
+                    <a th:if="${tratta != null and tratta.telegramInviteLink != null and !tratta.telegramInviteLink.isEmpty()}"
+                       th:href="${tratta.telegramInviteLink}" target="_blank"
+                       class="btn btn-sm w-100" style="background-color: #0088cc; color: white;">
+                        <i class="bi bi-box-arrow-up-right me-1"></i> Entra nel gruppo
                     </a>
-                </div>
-            </div>
 
-            <!-- Card Carica Video -->
-            <div class="card shadow-sm" style="border-left: 4px solid #198754;">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                        <i class="bi bi-camera-video-fill fs-3 me-3" style="color: #198754;"></i>
-                        <div>
-                            <h6 class="fw-bold mb-0">Carica Video</h6>
-                            <small class="text-muted">Aggiungi un nuovo video</small>
-                        </div>
+                    <!-- Link non ancora configurato -->
+                    <div th:unless="${tratta != null and tratta.telegramInviteLink != null and !tratta.telegramInviteLink.isEmpty()}"
+                         class="alert alert-warning small mb-0 py-2">
+                        Il gruppo Telegram non è ancora stato configurato dal supervisor.
                     </div>
-                    <p class="text-muted small mb-3">
-                        Carica un nuovo video di ispezione per la tua tratta.
-                    </p>
-                    <a href="/admin/addVideo" class="btn btn-sm w-100"
-                       style="background-color: #198754; color: white;"
-                       th:classappend="${tratta == null} ? 'disabled' : ''">
-                        <i class="bi bi-upload me-1"></i> Carica
-                    </a>
                 </div>
             </div>
             <!-- Card Profilo -->

@@ -34,6 +34,11 @@ public class Tratta {
 	@OneToOne
 	private User supervisor;		//utente responsabile di questa tratta
 
+	@OneToMany(mappedBy = "tratta", cascade = CascadeType.REMOVE)
+	private List<Anomalia> anomalie;
+
+
+
 	public Long getId() {
 		return id;
 	}
@@ -91,6 +96,9 @@ public class Tratta {
 
 	public User getSupervisor(){return supervisor;}
 	public void setSupervisor(User supervisor){this.supervisor = supervisor;}
+	
+	public List<Anomalia> getAnomalie(){return anomalie;}
+	public void setAnomalie(List<Anomalia> anomalie){this.anomalie = anomalie;}
 
 
 }

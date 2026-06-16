@@ -2,9 +2,11 @@ package it.uniroma3.siw.controller;
 
 import it.uniroma3.siw.model.Anomalia;
 import it.uniroma3.siw.model.TipoDiAnomalia;
+import it.uniroma3.siw.model.Tratta;
 import it.uniroma3.siw.model.Video;
 import it.uniroma3.siw.repository.AcquirenteRepository;
 import it.uniroma3.siw.service.AnomaliaService;
+import it.uniroma3.siw.service.TrattaService;
 import it.uniroma3.siw.service.VideoService;
 import it.uniroma3.siw.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class AlertRestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TrattaService trattaService;
 
     // Mappa Stringa Gravità (Python) su Intero Gravità (DB: 1-5)
     private static final Map<String, Integer> SEVERITY_MAP = new HashMap<>();
@@ -96,6 +101,10 @@ public class AlertRestController {
             }
 
             // 6. Assegnazione Entità
+            if(payload.trattaId != null){
+                Tratta tratta = trattaService.getById(payload.trattaId);
+                a.setTratta(tratta);
+            }
             a.setVideo(video);
 
             anomaliaService.saveFromAI(a, severity, payload.getChatId());

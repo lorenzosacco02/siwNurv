@@ -27,9 +27,11 @@ public class AlertDtoController {
     public String details;  // Dettagli tecnici
     public String source_video;
     public Long videoId; // Opzionale
+    public Long trattaId;
     public String chatId;
 
     // Getters/Setters omessi per brevità
     public void setChatId(String chatId){ this.chatId = chatId;}
     public String getChatId(){ return chatId;}
+
 }

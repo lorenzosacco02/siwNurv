@@ -98,22 +98,22 @@
                                 <span class="badge bg-danger rounded-pill" th:text="${anomalia.gravita}">3</span>
                             </div>
 
-                            <!-- Admin: checkbox per risolta -->
-                            <div class="mt-2" th:if="${isAdmin}">
-                                <form th:action="@{'/admin/anomalia/' + ${anomalia.id} + '/updateRisolta'}"
-                                      method="post" th:object="${anomalia}">
-                                    <input type="hidden" th:name="id" th:value="${anomalia.id}" />
+                            <!-- Stato risolta: modificabile da tutti (il backend applica il vincolo di tratta) -->
+                            <div class="mt-2">
+                                <form th:action="@{'/anomalia/' + ${anomalia.id} + '/updateRisolta'}" method="post">
+                                    <input type="hidden" name="risolta" th:value="${!anomalia.risolta}" />
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="risolta"
+                                        <input class="form-check-input" type="checkbox"
                                                th:checked="${anomalia.risolta}" onchange="this.form.submit()" />
-                                        <label class="form-check-label">Risolta</label>
+                                        <label class="form-check-label" th:text="${anomalia.risolta} ? 'Risolta' : 'Non risolta'">Stato</label>
                                     </div>
                                 </form>
-                            </div>
-
-                            <!-- Non admin: stato -->
-                            <div class="mt-2" th:if="${!isAdmin}">
-                                <span th:text="${anomalia.risolta} ? '✔ Risolta' : '✘ Non risolta'" class="text-muted"></span>
+                                <!-- Tracciabilità -->
+                                <small class="text-muted" th:if="${anomalia.risolta and anomalia.risoltaDa != null}">
+                                    Risolta da <span th:text="${anomalia.risoltaDa.name} + ' ' + ${anomalia.risoltaDa.surname}"></span>
+                                    <span th:if="${anomalia.dataRisoluzione != null}"
+                                          th:text="'il ' + ${#temporals.format(anomalia.dataRisoluzione, 'dd/MM/yyyy HH:mm')}"></span>
+                                </small>
                             </div>
                         </li>
                     </ul>

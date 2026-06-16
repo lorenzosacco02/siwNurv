@@ -5,6 +5,7 @@ import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.TipoDiAnomalia;
 import it.uniroma3.siw.model.Tratta;
 import it.uniroma3.siw.model.User;
+import it.uniroma3.siw.service.AnomaliaService;
 import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.TrattaService;
 import it.uniroma3.siw.service.UserService;
@@ -38,6 +39,8 @@ public class AuthController {
     private TrattaService trattaService;
 	@Autowired
 	private CredentialsValidator credentialsValidator;
+	@Autowired
+	private AnomaliaService anomaliaService;
 
 	@GetMapping("/accessDenied")
 	public String accessDenied(Model model) {
@@ -73,19 +76,23 @@ public class AuthController {
 			Tratta tratta = trattaService.getBySupervisor(currentUser);
 			model.addAttribute("user", currentUser);
 			model.addAttribute("tratta", tratta);
+			model.addAttribute("anomalie", anomaliaService.getByTratta(tratta));
 			return "user/supervisor/index";
 		}
 		if (credentials != null && credentials.getRole().equals(Credentials.DEFAULT_ROLE)) {
 			Tratta trattaOperatore = trattaService.getByOperatore(currentUser);
-				if(trattaOperatore!=null){
+			/*
+			if(trattaOperatore!=null){
 					// operatore assegnato ad una tratta
 					model.addAttribute("trattaOperatore", trattaOperatore);
 				}
-				model.addAttribute("tratte", trattaService.getAll());
-				model.addAttribute("user", currentUser);
-				return "user/index";
-			}
 
+			 */
+				model.addAttribute("user", currentUser);
+				model.addAttribute("tratta", trattaOperatore);
+				model.addAttribute("anomalie", anomaliaService.getByTratta(trattaOperatore));
+				return "user/operatore/index";
+			}
 		return "index";
 	}
 

@@ -76,6 +76,9 @@ public class AuthConfiguration {
                 .requestMatchers(HttpMethod.POST, "/admin/addVideo/**").hasAnyAuthority(ADMIN_ROLE, SUPERVISOR_ROLE)
                 .requestMatchers(HttpMethod.POST, "/admin/deleteVideo/**").hasAnyAuthority(ADMIN_ROLE, SUPERVISOR_ROLE)
 
+                // risoluzione anomalie: accessibile a tutti i ruoli autenticati
+                .requestMatchers(HttpMethod.POST, "/anomalia/**").hasAnyAuthority(ADMIN_ROLE, SUPERVISOR_ROLE, DEFAULT_ROLE)
+
                 // ====== REGOLE ADMIN (catch-all, vanno DOPO le regole più specifiche) ======
 
                 // pagine e risorse su cui solo gli ADMIN possono fare GET
@@ -95,7 +98,7 @@ public class AuthConfiguration {
                 .and().formLogin()
                 .loginPage("/login")
                 .permitAll()
-                .defaultSuccessUrl("/profile",true)
+                .defaultSuccessUrl("/",true)
                 .failureUrl("/login?error=true")
 
                 // CREA NUOVA SESSIONE:
@@ -106,7 +109,7 @@ public class AuthConfiguration {
                 .and()
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
-                        .defaultSuccessUrl("/profile", true)
+                        .defaultSuccessUrl("/", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
                         )

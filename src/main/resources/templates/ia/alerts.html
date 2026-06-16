@@ -37,8 +37,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Video</th>
+                        <th>Tratta</th>             <!--aggiungo tratta-->
                         <th>Tempo (s)</th>
-                        <!-- ❗ Nuova Colonna: Gravità -->
                         <th>Gravità</th>
                         <th>Tipo / Dettagli</th>
                         <th>Confidenza</th>
@@ -59,6 +59,13 @@
                                th:text="${a.video.nome}">NomeVideo</a>
                             <!-- Mostra il nome file se non è ancora associato al DB -->
                             <span th:if="${a.video == null}" th:text="${a.sorgenteVideoIA}">query.mp4</span>
+                        </td>
+
+                        <!-- Tratta (presa direttamente da a.tratta) -->
+                        <td>
+                            <a th:if="${a.tratta != null}" th:href="@{'/tratta/' + ${a.tratta.id}}"
+                               th:text="${a.tratta.nome}" class="badge bg-secondary text-decoration-none">Tratta</a>
+                            <span th:if="${a.tratta == null}" class="text-muted small">—</span>
                         </td>
 
                         <td th:text="${#numbers.formatDecimal(timeSec, 1, 2)}">12.34</td>
@@ -96,9 +103,9 @@
 
                         <td>
                             <div class="d-flex gap-2">
-                                <!-- Link alla Tratta/Video -->
-                                <a th:if="${a.video != null}" class="btn btn-sm btn-outline-primary"
-                                   th:href="@{'/tratta/' + ${a.video.tratta.id}}" title="Vai alla Tratta">
+                                <!-- Link alla Tratta -->
+                                <a th:if="${a.tratta != null}" class="btn btn-sm btn-outline-primary"
+                                   th:href="@{'/tratta/' + ${a.tratta.id}}" title="Vai alla Tratta">
                                     <i class="bi bi-geo-alt-fill"></i>
                                 </a>
 
@@ -110,11 +117,12 @@
                                 </a>
 
                                 <!-- Admin: Segnalazione Risolta -->
-                                <form th:if="${isAdmin}" th:action="@{'/admin/anomalia/' + ${a.id} + '/updateRisolta'}"
+                                <form th:action="@{'/anomalia/' + ${a.id} + '/updateRisolta'}"
                                       method="post" style="display:inline;">
-                                    <input type="hidden" name="id" th:value="${a.id}" />
+                                    <input type="hidden" name="risolta" th:value="${!a.risolta}" />
                                     <button type="submit" class="btn btn-sm"
-                                            th:classappend="${a.risolta} ? 'btn-success' : 'btn-outline-danger'">
+                                            th:classappend="${a.risolta} ? 'btn-success' : 'btn-outline-danger'"
+                                            th:title="${a.risolta} ? 'Segna come non risolta' : 'Segna come risolta'">
                                         <i th:class="${a.risolta} ? 'bi bi-check-lg' : 'bi bi-x-lg'"></i>
                                     </button>
                                 </form>

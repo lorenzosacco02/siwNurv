@@ -58,6 +58,14 @@ public class Anomalia {
 	@ManyToOne
 	private Acquirente acquirente;
 
+	@ManyToOne
+	private Tratta tratta;
+
+	@ManyToOne
+	private User risoltaDa;
+
+	private java.time.LocalDateTime dataRisoluzione;
+
 	// ------------------------------------
 	// METODI equals() e hashCode() ORIGINALI
 	// ------------------------------------
@@ -135,4 +143,13 @@ public class Anomalia {
 
 	public Acquirente getAcquirente(){ return acquirente; }
 	public void setAcquirente(Acquirente acquirente){ this.acquirente = acquirente; }
+
+	public Tratta getTratta() { return tratta; }
+	public void setTratta(Tratta tratta) { this.tratta = tratta; }
+
+	public User getRisoltaDa(){return risoltaDa;}
+	public void setRisoltaDa(User risoltaDa){this.risoltaDa = risoltaDa;}
+
+	public java.time.LocalDateTime getDataRisoluzione(){return dataRisoluzione;}
+	public void setDataRisoluzione(java.time.LocalDateTime dataRisoluzione){this.dataRisoluzione = dataRisoluzione;}
 }
